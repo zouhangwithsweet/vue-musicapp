@@ -1,6 +1,7 @@
-# douban
+# vuextest
 
 > A Vue.js project
+> 简单的使用vuex状态管理实现的TODOlist
 
 ## Build Setup
 
