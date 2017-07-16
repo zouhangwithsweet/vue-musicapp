@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="todoList">
-           <p v-for="todo in todoList" class="todoItem">
+           <p v-for="todo in todoList" class="todoItem" :key="todo">
             <span class="radio" @click="doneTodo(todo.id)"></span><span :class="{ 'isDone': todo.isDone }">{{todo.text}}</span>
            </p>
         </div>
