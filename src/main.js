@@ -7,6 +7,11 @@ import router from './router'
 import axios from 'axios'
 import store from './store'
 import fastclick from 'fastclick'
+import VueLazyLoad from 'vue-lazyload'
+
+Vue.use(VueLazyLoad, {
+    loading: require('common/image/default.png')
+})
 
 fastclick.attach(document.body)
 
