@@ -3,14 +3,21 @@
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
-import login from './modules/login';
-import todo from './modules/todo/index';
+import * as actions from './actions'
+import * as getters from './getters'
+import mutations from './mutations'
+import state from './state'
+import createLogger from 'vuex/dist/logger'
 Vue.use(Vuex);
 
+const debug = process.env.NOOE_ENV !== 'production'
+
 export default new Vuex.Store({
-    modules: {
-        login: login,
-        todo: todo
-    }
-});
+    actions,
+    getters,
+    state,
+    mutations,
+    strict: debug,
+    plugins: debug ? [createLogger()] : []
+})
 
