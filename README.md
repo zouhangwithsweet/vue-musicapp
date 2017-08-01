@@ -1,7 +1,7 @@
-# vuextest
+# music-app
 
 > A Vue.js project
-> 简单的使用vuex状态管理实现的TODOlist
+> vue全家桶音乐app
 
 ## Build Setup
 
