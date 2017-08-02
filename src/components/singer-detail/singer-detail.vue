@@ -6,14 +6,40 @@
 
 <script>
     import {mapGetters} from 'vuex'
+    import {getSingerData} from 'api/singer'
+    import {ERR_OK} from 'api/config'
     export default {
+        data() {
+            return {
+                song: []
+            }
+        },
         computed: {
             ...mapGetters([
                 'singer'
             ])
         },
         created() {
-            console.log(this.singer)
+            this._getData()
+        },
+        methods: {
+            _getData() {
+                if (!this.singer.id) {
+                    this.$router.push('/singer')
+                    return
+                }
+                getSingerData(this.singer.id).then(res => {
+                    if (res.code === ERR_OK) {
+                        console.log(res.data.list)
+                    }
+                })
+            },
+            nomarlizeSongs(list) {
+                let resp = []
+                list.forEach((item) => {
+                    let {musicData} = item
+                });
+            }
         }
     }
 </script>
