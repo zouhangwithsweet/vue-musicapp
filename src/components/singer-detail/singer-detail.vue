@@ -7,11 +7,12 @@
 <script>
     import {mapGetters} from 'vuex'
     import {getSingerData} from 'api/singer'
+    import {createSong} from 'common/js/song'
     import {ERR_OK} from 'api/config'
     export default {
         data() {
             return {
-                song: []
+                songs: []
             }
         },
         computed: {
@@ -30,15 +31,20 @@
                 }
                 getSingerData(this.singer.id).then(res => {
                     if (res.code === ERR_OK) {
-                        console.log(res.data.list)
+                        this.songs = this._nomarlizeSongs(res.data.list)
+                        console.log(this.songs)
                     }
                 })
             },
-            nomarlizeSongs(list) {
-                let resp = []
+            _nomarlizeSongs(list) {
+                let ret = []
                 list.forEach((item) => {
                     let {musicData} = item
+                    if (musicData.songid && musicData.albummid) {
+                        ret.push(createSong(musicData))
+                    }
                 });
+                return ret
             }
         }
     }
