@@ -3,17 +3,25 @@
         <div class="back">
             <i class="icon-back"></i>
         </div>
-        <h1 class="title">
+        <h1 class="title" v-html="title">
 
         </h1>
-        <div class="bg-image">
+        <div class="bg-image" :style="bgStyle" ref="bgImage">
             <div class="filter">
-
             </div>
         </div>
+        <div class="bg-layer" ref="layer">
+        </div>
+        <scroll :data="songs" class="list" ref="list">
+            <div class="song-list-wrapper">
+                <song-list :songs="songs"></song-list>
+            </div>
+        </scroll>
     </div>
 </template>
 <script>
+    import scroll from 'base/scroll/scroll'
+    import songList from 'base/song-list/song-list'
     export default {
         props: {
             bgImage: {
@@ -28,6 +36,22 @@
                 type: String,
                 default: ''
             }
+        },
+        computed: {
+            bgStyle() {
+                return `background-image:url(${this.bgImage})`
+            }
+        },
+        components: {
+            scroll,
+            songList
+        },
+        created() {
+            this.probeType = 3
+            this.listenScroll = true
+        },
+        mounted() {
+            this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
         }
     }
 </script>
