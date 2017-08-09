@@ -7,12 +7,17 @@
 
         </h1>
         <div class="bg-image" :style="bgStyle" ref="bgImage">
-            <div class="filter">
+            <div class="filter" ref="filter">
             </div>
         </div>
         <div class="bg-layer" ref="layer">
         </div>
-        <scroll :data="songs" class="list" ref="list">
+        <scroll @scroll="scroll" 
+                :listenScroll = "listenScroll"
+                :probeType = "probeType" 
+                :data="songs" 
+                class="list" 
+                ref="list">
             <div class="song-list-wrapper">
                 <song-list :songs="songs"></song-list>
             </div>
@@ -22,6 +27,8 @@
 <script>
     import scroll from 'base/scroll/scroll'
     import songList from 'base/song-list/song-list'
+
+    const RESERVED_HEIGHT = 40
     export default {
         props: {
             bgImage: {
@@ -37,21 +44,64 @@
                 default: ''
             }
         },
-        computed: {
-            bgStyle() {
-                return `background-image:url(${this.bgImage})`
+        data() {
+            return {
+                scrollY: 0
             }
-        },
-        components: {
-            scroll,
-            songList
         },
         created() {
             this.probeType = 3
             this.listenScroll = true
         },
         mounted() {
+            this.imageHeight = this.$refs.bgImage.clientHeight
+            this.minTranslateY = -this.imageHeight + RESERVED_HEIGHT
             this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
+        },
+        computed: {
+            bgStyle() {
+                return `background-image:url(${this.bgImage})`
+            }
+        },
+        methods: {
+            scroll(pos) {
+                this.scrollY = pos.y
+            }
+        },
+        watch: {
+            scrollY(newVal) {
+                let translateY = Math.max(this.minTranslateY, newVal)
+                let zIndex = 0
+                let scale = 1
+                let blur = 0
+                this.$refs.layer.style['transform'] = `translate3d(0, ${translateY}px, 0)`
+                this.$refs.layer.style['-webkit-transform'] = `translate3d(0, ${translateY}px, 0)`
+                const percent = Math.abs(newVal/this.imageHeight)
+                if (newVal > 0) {
+                    scale = 1 + percent
+                    zIndex = 10
+                } else {
+                    blur = Math.min(20 * percent, 20)
+                }
+                this.$refs.filter.style['filter'] = `blur(${blur}px)`
+                this.$refs.filter.style['backdrop-filter'] = `blur(${blur}px)`
+                this.$refs.filter.style['-webkitBackdrop-filter'] = `blur(${blur}px)`
+                if (newVal < this.minTranslateY) {
+                    zIndex = 10
+                    this.$refs.bgImage.style.paddingTop = 0
+                    this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
+                } else {
+                    this.$refs.bgImage.style.paddingTop = `70%`
+                    this.$refs.bgImage.style.height = 0
+                }
+                this.$refs.bgImage.style.zIndex = zIndex
+                this.$refs.bgImage.style['transform'] = `scale(${scale})`
+                this.$refs.bgImage.style['-webkit-transform'] = `scale(${scale})`
+            }
+        },
+        components: {
+            scroll,
+            songList
         }
     }
 </script>
