@@ -69,7 +69,7 @@ export default {
             if(this.loop && !isResize) {
                 width += 2 * sliderWidth
             }
-
+            
             this.$refs.sliderGroup.style.width = width + 'px'
         },
         _initSlider() {
