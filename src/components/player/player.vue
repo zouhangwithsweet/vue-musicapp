@@ -31,13 +31,13 @@
                             <i class="icon-sequence"></i>
                         </div>
                         <div class="icon i-left">
-                            <i class="icon-prev"></i>
+                            <i @click="prev" class="icon-prev"></i>
                         </div>
                         <div class="icon i-center">
                             <i @click="togglePlaying" :class="playIcon"></i>
                         </div>
                         <div class="icon i-right">
-                            <i class="icon-next"></i>
+                            <i @click="next" class="icon-next"></i>
                         </div>
                         <div class="icon i-right">
                             <i class="icon icon-not-favorite"></i>
@@ -63,7 +63,7 @@
                 </div>
             </div>
         </transition>
-        <audio :src="currentSong.url" ref="audio"></audio>
+        <audio :src="currentSong.url" ref="audio" @canplay="ready" @error="error"></audio>
     </div>
 </template>
 
@@ -73,6 +73,11 @@
     import {prefixStyle} from 'common/js/dom'
     const transform = prefixStyle('transform')
     export default {
+        data() {
+            return {
+                songReady: false
+            }
+        },
         computed: {
             playIcon() {
                 return this.playing ? 'icon-pause' : 'icon-play'
@@ -87,7 +92,8 @@
                 'fullScreen',
                 'playList',
                 'currentSong',
-                'playing'
+                'playing',
+                'currentIndex'
             ])
         },
         created() {
@@ -114,6 +120,40 @@
             },
             togglePlaying() {
                 this.setPlayingState(!this.playing)
+            },
+            ready() {
+                this.songReady = true
+            },
+            error() {
+
+            },
+            next() {
+                if (!this.songReady) {
+                    return
+                }
+                let index = this.currentIndex + 1
+                if (index === this.playList.length) {
+                    index = 0
+                }
+                this.setCurrentIndex(index)
+                if (!this.playing) {
+                    this.togglePlaying()
+                }
+                this.songReady = false
+            },
+            prev() {
+                if (!this.songReady) {
+                    return
+                }
+                let index = this.currentIndex - 1
+                if (index === -1) {
+                    index = this.playList.length - 1
+                }
+                this.setCurrentIndex(index)
+                if (!this.playing) {
+                    this.togglePlaying()
+                }
+                this.songReady = false
             },
             enter(el, done) {
                 const {x, y, scale} = this._getPosAndScale()
@@ -169,7 +209,8 @@
             },
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN',
-                setPlayingState: 'SET_PLAYING_STATE'
+                setPlayingState: 'SET_PLAYING_STATE',
+                setCurrentIndex: 'SET_CURRENT_INDEX'
             })
         }
     }
