@@ -26,8 +26,15 @@
                     </div>
                 </div>
                 <div class="bottom">
+                    <div class="progress-wrapper">
+                        <span class="time time-l">{{format(currentTime)}}</span>
+                        <div class="progress-bar-wrapper">
+                            <progress-bar :percent="percent"></progress-bar>
+                        </div>
+                        <span class="time time-r">{{format(currentSong.duration)}}</span>
+                    </div>
                     <div class="operators">
-                        <div class="icon i-left">
+                        <div class="icon i-left" :class="disableCls">
                             <i class="icon-sequence"></i>
                         </div>
                         <div class="icon i-left">
@@ -36,7 +43,7 @@
                         <div class="icon i-center">
                             <i @click="togglePlaying" :class="playIcon"></i>
                         </div>
-                        <div class="icon i-right">
+                        <div class="icon i-right" :class="disableCls">
                             <i @click="next" class="icon-next"></i>
                         </div>
                         <div class="icon i-right">
@@ -63,7 +70,11 @@
                 </div>
             </div>
         </transition>
-        <audio :src="currentSong.url" ref="audio" @canplay="ready" @error="error"></audio>
+        <audio :src="currentSong.url" 
+               ref="audio" 
+               @canplay="ready" 
+               @error="error"
+               @timeupdate="updateTime"></audio>
     </div>
 </template>
 
@@ -71,11 +82,13 @@
     import {mapGetters, mapMutations} from 'vuex'
     import animations from 'create-keyframe-animation'
     import {prefixStyle} from 'common/js/dom'
+    import progressBar from 'base/progress-bar/progress-bar'
     const transform = prefixStyle('transform')
     export default {
         data() {
             return {
-                songReady: false
+                songReady: false,
+                currentTime: 0
             }
         },
         computed: {
@@ -87,6 +100,12 @@
             },
             cdCls() {
                 return this.playing ? 'play' : 'play pause'
+            },
+            disableCls() {
+                return this.songReady ? '' : 'disable'
+            },
+            percent() {
+                return this.currentTime / this.currentSong.duration
             },
             ...mapGetters([
                 'fullScreen',
@@ -125,7 +144,10 @@
                 this.songReady = true
             },
             error() {
-
+                this.songReady = true
+            },
+            updateTime(e) {
+                this.currentTime = e.target.currentTime
             },
             next() {
                 if (!this.songReady) {
@@ -192,6 +214,20 @@
                 this.$refs.cdWrapper.style.transition = ''
                 this.$refs.cdWrapper.style[transform] = ''
             },
+            format(interval) {
+                interval = interval | 0
+                const minute = interval / 60 | 0
+                const second = this._pad(interval % 60)
+                return `${minute}:${second}`
+            },
+            _pad(num, n = 2) {
+                let len = num.toString().length
+                while (len < n) {
+                    num = '0' + num
+                    len ++
+                }
+                return num
+            },
             _getPosAndScale() {
                 const targetWidth = 40
                 const paddingLeft = 40
@@ -212,6 +248,9 @@
                 setPlayingState: 'SET_PLAYING_STATE',
                 setCurrentIndex: 'SET_CURRENT_INDEX'
             })
+        },
+        components: {
+            progressBar
         }
     }
 </script>
