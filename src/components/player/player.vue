@@ -34,10 +34,10 @@
                         <span class="time time-r">{{format(currentSong.duration)}}</span>
                     </div>
                     <div class="operators">
-                        <div class="icon i-left" :class="disableCls">
-                            <i class="icon-sequence"></i>
+                        <div class="icon i-left" @click="changeMode">
+                            <i :class="iconMode"></i>
                         </div>
-                        <div class="icon i-left">
+                        <div class="icon i-left" :class="disableCls">
                             <i @click="prev" class="icon-prev"></i>
                         </div>
                         <div class="icon i-center">
@@ -63,7 +63,9 @@
                     <p class="desc" v-html="currentSong.singer"></p>
                 </div>
                 <div class="control">
-                    <i @click.stop="togglePlaying" :class="miniIcon"></i>
+                    <progressCircle :radius="radius" :percent="percent">
+                        <i @click.stop="togglePlaying" :class="miniIcon" class="icon-mini"></i>
+                    </progressCircle>
                 </div>
                 <div class="control">
                     <i class="icon-playlist"></i>
@@ -83,12 +85,16 @@
     import animations from 'create-keyframe-animation'
     import {prefixStyle} from 'common/js/dom'
     import progressBar from 'base/progress-bar/progress-bar'
+    import progressCircle from 'base/progress-circle/progress-circle'
+    import {playMode} from 'common/js/config'
+    import {shuffle} from 'common/js/util'
     const transform = prefixStyle('transform')
     export default {
         data() {
             return {
                 songReady: false,
-                currentTime: 0
+                currentTime: 0,
+                radius: 32
             }
         },
         computed: {
@@ -107,12 +113,18 @@
             percent() {
                 return this.currentTime / this.currentSong.duration
             },
+            iconMode() {
+                return this.mode === playMode.sequence ? 'icon-sequence' : this.mode
+                === playMode.loop ? 'icon-loop' : 'icon-random'
+            },
             ...mapGetters([
                 'fullScreen',
                 'playList',
                 'currentSong',
                 'playing',
-                'currentIndex'
+                'currentIndex',
+                "mode",
+                "sequenceList"
             ])
         },
         created() {
@@ -228,6 +240,26 @@
                     return
                 }
             },
+            changeMode() {
+                const mode = (this.mode + 1) % 3
+                console.log(this.playList)
+                console.log(this.sequenceList)
+                this.setPlayMode(mode)
+                let list = null
+                if (mode === playMode.random) {
+                    list = shuffle(this.sequenceList)
+                } else {
+                    list = this.sequenceList
+                }
+                this.resetCurrenIndex(list)
+                this.setPlayList(list)
+            },
+            resetCurrenIndex(list) {
+                let index = list.findIndex((item) => {
+                    return item.id === this.currentSong.id
+                })
+                this.setCurrentIndex(index)
+            },
             _pad(num, n = 2) {
                 let len = num.toString().length
                 while (len < n) {
@@ -254,11 +286,14 @@
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN',
                 setPlayingState: 'SET_PLAYING_STATE',
-                setCurrentIndex: 'SET_CURRENT_INDEX'
+                setCurrentIndex: 'SET_CURRENT_INDEX',
+                setPlayMode: 'SET_PLAY_MODE',
+                setPlayList: 'SET_PLAYLIST'
             })
         },
         components: {
-            progressBar
+            progressBar,
+            progressCircle
         }
     }
 </script>
