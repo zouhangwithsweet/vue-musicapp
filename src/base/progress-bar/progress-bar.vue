@@ -31,7 +31,7 @@
             percent: {
                 deep: true,
                 handler(newVal) {
-                    if (newVal >= 0 && this.initiated === false) {
+                    if (newVal >= 0 && !this.initiated) {
                         const barWidth = this.$refs.progressBar.clientWidth - BTNWIDTH
                         const offsetWidth = newVal * barWidth
                         this._offset(offsetWidth)
@@ -59,7 +59,11 @@
                 this._triggerPercent()
             },
             progressClick(e) {
-                this._offset(e.offsetX)
+                const rect = this.$refs.progressBar.getBoundingClientRect()
+                const offsetWidth = e.pageX - rect.left
+                // 点击btn，offsetX不对
+                // this._offset(e.offsetX)
+                this._offset(offsetWidth)
                 this._triggerPercent()
             },
             _triggerPercent() {

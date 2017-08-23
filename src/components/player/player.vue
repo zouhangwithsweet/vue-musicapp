@@ -76,7 +76,8 @@
                ref="audio" 
                @canplay="ready" 
                @error="error"
-               @timeupdate="updateTime"></audio>
+               @timeupdate="updateTime"
+               @ended="end"></audio>
     </div>
 </template>
 
@@ -130,7 +131,10 @@
         created() {
         },
         watch: {
-            currentSong() {
+            currentSong(newVal, oldVal) {
+                if (newVal.id === oldVal.id) {
+                    return
+                }
                 this.$nextTick(() => {
                     this.$refs.audio.play()
                 })
@@ -189,6 +193,17 @@
                 }
                 this.songReady = false
             },
+            end() {
+                if (this.mode === playMode.loop) {
+                    this.loop()
+                } else {
+                    this.next()
+                }
+            },
+            loop() {
+                this.$refs.audio.currentTime = 0
+                this.$refs.audio.play()
+            },
             enter(el, done) {
                 const {x, y, scale} = this._getPosAndScale()
                 let animation = {
@@ -242,8 +257,6 @@
             },
             changeMode() {
                 const mode = (this.mode + 1) % 3
-                console.log(this.playList)
-                console.log(this.sequenceList)
                 this.setPlayMode(mode)
                 let list = null
                 if (mode === playMode.random) {
