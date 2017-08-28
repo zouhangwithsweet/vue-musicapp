@@ -137,7 +137,9 @@
                 }
                 this.$nextTick(() => {
                     this.$refs.audio.play()
-                    this.currentSong.getLyric()
+                    this.currentSong.getLyric().then((res) => {
+                        console.log(res)
+                    })
                 })
             },
             playing(newVal) {

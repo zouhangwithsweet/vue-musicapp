@@ -54,7 +54,6 @@ apiRoutes.get('/lyric', function(req, res){
             if (matches) {
                 ret = JSON.parse(matches[1])
             }
-            console.log(ret)
         }
         res.json(ret)
     }).catch((e) =>{
