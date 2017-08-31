@@ -5,18 +5,18 @@ import {shuffle} from 'common/js/util'
 export const playlistMixin = {
   computed: {
     ...mapGetters([
-      'playlist'
+      'playList'
     ])
   },
   mounted() {
-    this.handlePlaylist(this.playlist)
+    this.handlePlaylist(this.playList)
   },
   activated() {
-    this.handlePlaylist(this.playlist)
+    this.handlePlaylist(this.playList)
   },
   watch: {
     playlist(newVal) {
-      this.handlePlaylist(newVal)
+      this.handlePlayList(newVal)
     }
   },
   methods: {
