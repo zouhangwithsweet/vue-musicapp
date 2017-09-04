@@ -38,7 +38,7 @@
         created () {
             setTimeout(() => {
                 this._getTopList()
-            }, 500);
+            }, 1000);
         },
         methods: {
             handlePlaylist(playlist) {
