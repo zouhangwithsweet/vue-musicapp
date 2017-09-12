@@ -1,13 +1,12 @@
 <template>
     <div class="suggest">
         <ul class="suggest-list">
-            <li class="suggest-item">
+            <li class="suggest-item" v-for="item in result" :key="item">
                 <div class="icon">
-                    <i></i>
+                    <i :class="getIconCls(item)"></i>
                 </div>
                 <div class="name">
-                    <p class="text">
-
+                    <p class="text" v-html="getDisplayName(item)">
                     </p>
                 </div>
             </li>
@@ -18,6 +17,8 @@
 <script>
     import {search} from 'api/search'
     import {ERR_OK} from 'api/config'
+    import {filterSinger} from 'common/js/song'
+    const TYPE_SINGER = 'singer'
     export default {
         props: {
             query: {
@@ -43,8 +44,30 @@
                     }
                 })
             },
+            getIconCls(item) {
+                if (item.type === TYPE_SINGER) {
+                    return 'icon-mine'
+                } else {
+                    return 'icon-music'
+                }
+            },
+            getDisplayName(item) {
+                if (item.type === TYPE_SINGER) {
+                    return item.singername
+                } else {
+                    return `${item.name}-${filterSinger(item.singer)}`
+                }
+            },
             _genResult(data) {
+                let ret = []
+                if (data.zhida && data.zhida.singerid) {
+                    ret.push({...data.zhida, ...{type: TYPE_SINGER}})
+                }
+                if (data.song) {
+                    ret = ret.concat(data.song.list)
+                }
 
+                return ret
             }
         },
         watch: {
