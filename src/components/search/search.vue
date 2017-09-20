@@ -8,7 +8,7 @@
                 <div class="hot-key">
                     <h1 class="title">热门搜索</h1>
                     <ul>
-                        <li @click="addQuery(item)" class="item" v-for="(item, index) in hotKey" :key="index">
+                        <li @click="addQuery(item.k)" class="item" v-for="(item, index) in hotKey" :key="index">
                             <span>{{item.k}}</span>
                         </li>
                     </ul>
@@ -20,6 +20,7 @@
                             <i class="icon-clear"></i>
                         </span>
                     </h1>
+                    <search-list @select="addQuery" :searches="searchHistory"></search-list>
                 </div>
             </div>
         </div>
@@ -33,6 +34,7 @@
 <script>
     import SearchBox from 'base/search-box/search-box'
     import suggest from 'components/suggest/suggest'
+    import searchList from 'base/search-list/search-list'
     import {getHotKey} from 'api/search'
     import {ERR_OK} from 'api/config'
     import {mapActions, mapGetters} from 'vuex'
@@ -53,7 +55,7 @@
         },
         methods: {
             addQuery(query) {
-                this.$refs.searchBox.setQuery(query.k)
+                this.$refs.searchBox.setQuery(query)
             },
             blurInput() {
                 this.$refs.searchBox.blur()
@@ -77,7 +79,8 @@
         },
         components: {
             SearchBox,
-            suggest
+            suggest,
+            searchList
         }
     }
 </script>
