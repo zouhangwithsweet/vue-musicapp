@@ -20,7 +20,7 @@
                             <i class="icon-clear"></i>
                         </span>
                     </h1>
-                    <search-list @select="addQuery" :searches="searchHistory"></search-list>
+                    <search-list @select="addQuery" @delete="deleteOne" :searches="searchHistory"></search-list>
                 </div>
             </div>
         </div>
@@ -63,6 +63,9 @@
             saveSearch() {
                 this.saveSearchHistory(this.query)
             },
+            deleteOne(item) {
+                this.deleteSearchHistory(item)
+            },
             _getHotKey() {
                 getHotKey().then(res => {
                     if (res.code === ERR_OK) {
@@ -74,7 +77,8 @@
                 this.query = query
             },
             ...mapActions([
-                'saveSearchHistory'
+                'saveSearchHistory',
+                'deleteSearchHistory'
             ])
         },
         components: {
