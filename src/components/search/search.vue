@@ -27,7 +27,7 @@
         <div class="search-result" v-show="query">
             <suggest :query="query" @listScroll="blurInput" @select="saveSearch"></suggest>
         </div>
-        <confirm text="是否清空搜索历史" confirmBtnText="清空" ref="confirm"></confirm>
+        <confirm text="是否清空搜索历史" confirmBtnText="清空" ref="confirm" @confirm="clearSearch"></confirm>
         <router-view></router-view>
     </div>
 </template>

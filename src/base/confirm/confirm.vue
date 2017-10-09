@@ -7,11 +7,11 @@
 
                     </p>
                     <div class="operate">
-                        <div class="operate-btn left">
-                            {{confirmBtnText}}
-                        </div>
-                        <div class="operate-btn">
+                        <div class="operate-btn left" @click="confirm">
                             {{cancelBtnText}}
+                        </div>
+                        <div class="operate-btn" @click="cancel">
+                            {{confirmBtnText}}
                         </div>
                     </div>
                 </div>
@@ -47,6 +47,14 @@
             },
             hide() {
                 this.showFlag = false
+            },
+            cancel() {
+                this.hide()
+                this.$emit('cancel')
+            },
+            confirm() {
+                this.hide()
+                this.$emit('confirm')
             }
         }
     }
