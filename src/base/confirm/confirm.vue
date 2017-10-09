@@ -1,6 +1,6 @@
 <template>
-    <transiton name="confirm-fade">
-        <div class="confirm">
+    <transition name="confirm-fade">
+        <div class="confirm" v-show="showFlag">
             <div class="confirm-wrapper">
                 <div class="confirm-content">
                     <p class="text">
@@ -8,21 +8,47 @@
                     </p>
                     <div class="operate">
                         <div class="operate-btn left">
-
+                            {{confirmBtnText}}
                         </div>
                         <div class="operate-btn">
-
+                            {{cancelBtnText}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </transiton>
+    </transition>
 </template>
 
 <script>
     export default {
-
+        props: {
+            text: {
+                type: String,
+                default: ''
+            },
+            confirmBtnText: {
+                type: String,
+                default: '确定'
+            },
+            cancelBtnText: {
+                type: String,
+                default: '取消'
+            }
+        },
+        data() {
+            return {
+                showFlag: false
+            }
+        },
+        methods: {
+            show() {
+                this.showFlag = true
+            },
+            hide() {
+                this.showFlag = false
+            }
+        }
     }
 </script>
 
