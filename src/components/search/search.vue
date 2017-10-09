@@ -66,7 +66,7 @@
                 this.saveSearchHistory(this.query)
             },
             showConfirm() {
-                this.$refs.show()
+                this.$refs.confirm.show()
             },
             deleteOne(item) {
                 this.deleteSearchHistory(item)

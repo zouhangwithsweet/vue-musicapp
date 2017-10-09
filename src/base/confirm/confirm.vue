@@ -4,13 +4,13 @@
             <div class="confirm-wrapper">
                 <div class="confirm-content">
                     <p class="text">
-
+                        {{text}}
                     </p>
                     <div class="operate">
-                        <div class="operate-btn left" @click="confirm">
+                        <div class="operate-btn left" @click="cancel">
                             {{cancelBtnText}}
                         </div>
-                        <div class="operate-btn" @click="cancel">
+                        <div class="operate-btn" @click="confirm">
                             {{confirmBtnText}}
                         </div>
                     </div>
