@@ -75,6 +75,11 @@
       animation: confirm-fadein 0.3s
       .confirm-content
         animation: confirm-zoom 0.3s
+    &.confirm-fade-leave-active
+        transition all .3s
+    &.confirm-fade-enter, &.confirm-fade-leave-to
+      opacity 0
+      transform scale(0)
     .confirm-wrapper
       position: absolute
       top: 50%

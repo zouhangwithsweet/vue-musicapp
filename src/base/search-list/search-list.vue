@@ -23,7 +23,6 @@
         },
         methods: {
             selectItem(item) {
-                console.log('ok')
                 this.$emit('select', item)
             },
             deleteOne(item) {
