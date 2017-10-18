@@ -29,7 +29,7 @@
                         <span class="text">添加歌曲到队列</span>
                     </div>
                 </div>
-                <div class="list-close">
+                <div class="list-close" @click="hide">
                     <span>关闭</span>
                 </div>
             </div>
