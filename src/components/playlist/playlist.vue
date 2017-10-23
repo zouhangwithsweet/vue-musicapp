@@ -6,22 +6,22 @@
                     <h1 class="title">
                         <i class="icon"></i>
                         <span class="text"></span>
-                        <span class="clear"><i class="icon-clear"></i></span>
+                        <span class="clear" @click="showConfirm"><i class="icon-clear"></i></span>
                     </h1>
                 </div>
                 <scroll ref="listContainer" :data="sequenceList" class="list-content">
-                    <ul>
-                        <li ref="listItem" @click="selectItem(item, index)" class="item" v-for="(item, index) in sequenceList" :key="index">
+                    <transition-group name="list" tag="ul">
+                        <li ref="listItem" @click="selectItem(item, index)" class="item" v-for="(item, index) in sequenceList" :key="item.id">
                             <i class="current" :class="getCurrentIcon(item)"></i>
                             <span class="text">{{item.name}}</span>
                             <span class="like">
                                 <i class="icon-not-favorite"></i>
                             </span>
-                            <span class="delete">
+                            <span class="delete" @click.stop="deleteOne(item)">
                                 <i class="icon-delete"></i>
                             </span>
                         </li>
-                    </ul>
+                    </transition-group>
                 </scroll>
                 <div class="list-operate">
                     <div class="add">
@@ -33,14 +33,16 @@
                     <span>关闭</span>
                 </div>
             </div>
+            <confirm ref="confirm" @confirm="clear" text="是否清空播放列表" confirmBtnText="清空"></confirm>
         </div>
     </transition>
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from 'vuex'
+    import {mapGetters, mapMutations, mapActions} from 'vuex'
     import {playMode} from 'common/js/config'
     import scroll from 'base/scroll/scroll'
+    import confirm from 'base/confirm/confirm'
     export default {
         data() {
             return {
@@ -48,6 +50,13 @@
             }
         },
         methods: {
+            showConfirm() {
+                this.$refs.confirm.show()
+            },
+            clear() {
+                this.deleteSongList()
+                this.hide()
+            },
             show() {
                 this.showFlag = true
                 setTimeout(() => {
@@ -57,6 +66,12 @@
             },
             hide() {
                 this.showFlag = false
+            },
+            deleteOne(item) {
+                this.deleteSong(item)
+                if (!this.sequenceList.length) {
+                    this.hide()
+                }
             },
             getCurrentIcon(item) {
                 if (this.currentSong.id === item.id) {
@@ -82,7 +97,11 @@
             ...mapMutations({
                 setCurrentIndex: 'SET_CURRENT_INDEX',
                 setPlayingState: 'SET_PLAYING_STATE'
-            })
+            }),
+            ...mapActions([
+                'deleteSong',
+                'deleteSongList'
+            ])
         },
         watch: {
             currentSong(newVal, oldVal) {
@@ -99,7 +118,8 @@
             ])
         },
         components: {
-            scroll
+            scroll,
+            confirm
         }
     }
 </script>

@@ -163,6 +163,9 @@
         },
         watch: {
             currentSong(newVal, oldVal) {
+                if (!newVal.id) {
+                    return
+                }
                 if (newVal.id === oldVal.id) {
                     return
                 }
