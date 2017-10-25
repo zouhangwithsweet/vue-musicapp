@@ -4,7 +4,7 @@
             <div class="list-wrapper" @click.stop>
                 <div class="list-header">
                     <h1 class="title">
-                        <i class="icon"></i>
+                        <i class="icon" :class="iconMode"></i>
                         <span class="text"></span>
                         <span class="clear" @click="showConfirm"><i class="icon-clear"></i></span>
                     </h1>
@@ -43,7 +43,10 @@
     import {playMode} from 'common/js/config'
     import scroll from 'base/scroll/scroll'
     import confirm from 'base/confirm/confirm'
+    import {playerMixin} from 'common/js/mixin'
+
     export default {
+        mixins: [playerMixin],
         data() {
             return {
                 showFlag: false
@@ -94,10 +97,6 @@
                 })
                 this.$refs.listContainer.scrollToElement(this.$refs.listItem[index], 300)
             },
-            ...mapMutations({
-                setCurrentIndex: 'SET_CURRENT_INDEX',
-                setPlayingState: 'SET_PLAYING_STATE'
-            }),
             ...mapActions([
                 'deleteSong',
                 'deleteSongList'
