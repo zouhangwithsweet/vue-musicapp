@@ -4,8 +4,8 @@
             <div class="list-wrapper" @click.stop>
                 <div class="list-header">
                     <h1 class="title">
-                        <i class="icon" :class="iconMode"></i>
-                        <span class="text"></span>
+                        <i class="icon" :class="iconMode" @click="changeMode"></i>
+                        <span class="text">{{modeText}}</span>
                         <span class="clear" @click="showConfirm"><i class="icon-clear"></i></span>
                     </h1>
                 </div>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapMutations, mapActions} from 'vuex'
+    import {mapActions} from 'vuex'
     import {playMode} from 'common/js/config'
     import scroll from 'base/scroll/scroll'
     import confirm from 'base/confirm/confirm'
@@ -84,7 +84,7 @@
             },
             selectItem(item, index) {
                 if (this.mode === playMode.random) {
-                    index = this.playlist.findIndex(() => {
+                    index = this.playList.findIndex( song => {
                         return song.id === item.id
                     })
                 }
@@ -111,10 +111,10 @@
             }
         },
         computed: {
-            ...mapGetters([
-                'sequenceList',
-                'currentSong'
-            ])
+            modeText() {
+                return this.mode === playMode.sequence ? '顺序播放' : this.mode === playMode.random
+                ? '随机播放' : '单曲循环'
+            }
         },
         components: {
             scroll,

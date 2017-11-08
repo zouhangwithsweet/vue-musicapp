@@ -33,7 +33,7 @@ export const playerMixin = {
     },
     ...mapGetters([
       'sequenceList',
-      'playlist',
+      'playList',
       'currentSong',
       'mode',
       'favoriteList'
