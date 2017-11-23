@@ -2,6 +2,9 @@
 
 > A Vue.js project
 > vue全家桶音乐app
+##先提一个版本吧
+预览地址
+https://zouhangwithsweet.github.io/vue-musicapp/dist/#/
 
 ## Build Setup
 
