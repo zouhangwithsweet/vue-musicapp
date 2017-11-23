@@ -8,14 +8,15 @@
                 </div>
             </div>
             <div class="search-box-wrapper">
-                <search-box placeholder="搜索歌曲" @query="search"></search-box>
+                <search-box placeholder="搜索歌曲" ref="searchBox" @query="search"></search-box>
             </div>
             <div class="shortcut" v-show="!query">
 
             </div>
             <div class="search-result" v-show="query">
                 <suggest :query="query" :showSinger="showSinger" 
-                    @select="selectSuggest"></suggest>
+                    @select="selectSuggest"
+                    @listScroll="blurInput"></suggest>
             </div>
         </div>
     </transition>
@@ -44,8 +45,8 @@
             search(query) {
                 this.query = query
             },
-            selectSuggest(item) {
-
+            selectSuggest() {
+                this.saveSearch()
             }
         },
         components: {
