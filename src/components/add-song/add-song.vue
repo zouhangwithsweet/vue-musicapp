@@ -24,7 +24,9 @@
 <script>
     import SearchBox from 'base/search-box/search-box'
     import suggest from 'components/suggest/suggest'
+    import {searchMixin} from 'common/js/mixin'
     export default {
+        mixins: [searchMixin],
         data() {
             return {
                 showFlag: false,
