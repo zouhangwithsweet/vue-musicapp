@@ -7,11 +7,11 @@ const mutations = {
     [types.SET_PLAY_MODE](state, flag) {
         state.playing = flag
     },
-    [types.SET_FULL_SCREEN](state,flag) {
+    [types.SET_FULL_SCREEN](state, flag) {
         state.fullScreen = flag
     },
     [types.SET_PLAYING_STATE](state, flag) {
-        state.playing = flag 
+        state.playing = flag
     },
     [types.SET_PLAYLIST](state, list) {
         state.playList = list
@@ -33,6 +33,9 @@ const mutations = {
     },
     [types.SET_SEARCH_HISTORY](state, history) {
         state.searchHistory = history
+    },
+    [types.SET_PLAY_HISTORY](state, history) {
+        state.playHistory = history
     }
 }
 export default mutations
