@@ -5,8 +5,8 @@
 
 ## 先提一个版本吧
 >预览地址
->https://zouhangwithsweet.github.io/vue-musicapp/dist/#/
->[herokub部署版本](https://fierce-basin-90527.herokuapp.com/#/singer)
+> https://zouhangwithsweet.github.io/vue-musicapp/dist/#/
+> [herokub部署版本](https://fierce-basin-90527.herokuapp.com/#/singer)
 
 ## Build Setup
 
