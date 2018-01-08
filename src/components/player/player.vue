@@ -158,12 +158,20 @@
         },
         watch: {
             currentSong(newVal, oldVal) {
-                if (!newVal.id) {
+                if (!newVal.id || !newVal.url || newVal.id === oldVal.id) {
                     return
                 }
-                if (newVal.id === oldVal.id) {
-                    return
+                this.songReady = false
+                this.canLyricPlay = false
+                if (this.currentLyric) {
+                    this.currentLyric.stop()
+                    // 重置为null
+                    this.currentLyric = null
+                    this.currentTime = 0
+                    this.playingLyric = ''
+                    this.currentLineNum = 0
                 }
+                this.$refs.audio.src = newVal.url
                 if (this.currentLyric) {
                     this.currentLyric.stop()
                 }
