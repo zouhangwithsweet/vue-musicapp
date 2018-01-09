@@ -10,7 +10,7 @@ import fastclick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
 
 Vue.use(VueLazyLoad, {
-    loading: require('common/image/default.png')
+    loading: require('common/image/newicon.png')
 })
 
 fastclick.attach(document.body)

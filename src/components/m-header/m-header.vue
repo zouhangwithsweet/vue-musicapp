@@ -1,7 +1,7 @@
 <template>
     <div class="m-header">
         <div class="icon"></div>
-        <h1 class="text">app music</h1>
+        <h1 class="text">vue-music</h1>
     </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
         width 30px
         height 32px
         margin-right 9px
-        bg-image('logo')
+        background-image url('./newicon.png')
         background-size 30px 32px
     .text
         display inline-block
