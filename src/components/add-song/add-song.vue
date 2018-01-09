@@ -13,9 +13,21 @@
             <div class="shortcut" v-show="!query">
                 <switches @switch="switchTab" :switches="switches" :currentIndex="currentIndex"></switches>
                 <div class="list-wrapper">
-                    <scroll v-if="currentIndex === 0" :data="playHistory">
+                    <scroll ref="s1" class="list-scroll" v-if="currentIndex === 0" :data="playHistory">
                         <div class="list-inner">
-                            <song-list :songs="playHistory"></song-list>
+                            <song-list :songs="playHistory"
+                                @select="selectSong"></song-list>
+                        </div>
+                    </scroll>
+                    <scroll ref="s2" class="list-scroll"
+                        v-if="currentIndex === 1"
+                        :data="searchHistory">
+                        <div class="list-inner">
+                            <search-list
+                                @delete="deleteSearchHistory"
+                                @select="addQuery"
+                                :searches="searchHistory">
+                            </search-list>
                         </div>
                     </scroll>
                 </div>
@@ -36,7 +48,9 @@
     import Switches from 'base/switches/switches'
     import scroll from 'base/scroll/scroll'
     import songList from 'base/song-list/song-list'
-    import {mapGetters} from 'vuex'
+    import searchList from 'base/search-list/search-list'
+    import {mapGetters, mapActions} from 'vuex'
+    import Song from 'common/js/song'
     export default {
         mixins: [searchMixin],
         data() {
@@ -59,6 +73,9 @@
         methods: {
             show() {
                 this.showFlag = true
+                setTimeout(() => {
+                    this.currentIndex === 0 ? this.$refs.s1.refresh() : this.$refs.s2.refresh()
+                }, 20);
             },
             hide() {
                 this.showFlag = false
@@ -71,14 +88,23 @@
             },
             switchTab(index) {
                 this.currentIndex = index
-            }
+            },
+            selectSong(song, index) {
+                if (index !== 0) {
+                    this.insertSong(new Song(song))
+                }
+            },
+            ...mapActions([
+                'insertSong'
+            ])
         },
         components: {
             SearchBox,
             suggest,
             Switches,
             scroll,
-            songList
+            songList,
+            searchList
         }
     }
 </script>
@@ -115,7 +141,6 @@
           padding: 12px
           font-size: 20px
           color: $color-theme
-
     .search-box-wrapper
       margin: 20px
     .shortcut

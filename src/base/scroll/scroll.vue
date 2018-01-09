@@ -20,7 +20,7 @@ export default {
             type: Array,
             default: null
         },
-        listenScroll:{
+        listenScroll: {
             type: Boolean,
             default: false
         },
