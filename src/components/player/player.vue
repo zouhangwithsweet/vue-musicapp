@@ -99,7 +99,8 @@
                @canplay="ready" 
                @error="error"
                @timeupdate="updateTime"
-               @ended="end"></audio>
+               @ended="end"
+               @pause="paused"></audio>
     </div>
 </template>
 
@@ -128,7 +129,9 @@
                 currentLyric: null,
                 currentLineNum: 0,
                 currentShow: 'cd',
-                playingLyric: ''
+                playingLyric: '',
+                isPureMusic: false,
+                pureMusicLyric: ''
             }
         },
         computed: {
@@ -207,8 +210,19 @@
                 }
             },
             ready() {
+                clearTimeout(this.timer)
                 this.songReady = true
+                this.canLyricPlay = true
                 this.savePlayHistory(this.currentSong)
+                if (this.currentLyric && !this.isPureMusic) {
+                    this.currentLyric.seek(this.currentTime * 1000)
+                }
+            },
+            paused() {
+                this.setPlayingState(false)
+                if (this.currentLyric) {
+                    this.currentLyric.stop()
+                }
             },
             error() {
                 this.songReady = true
