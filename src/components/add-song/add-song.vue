@@ -37,6 +37,12 @@
                     @select="selectSuggest"
                     @listScroll="blurInput"></suggest>
             </div>
+            <top-tip ref="topTip">
+                <div class="tip-title">
+                    <i class="icon-ok"></i>
+                    <span class="text">已添加</span>
+                </div>
+            </top-tip>
         </div>
     </transition>
 </template>
@@ -51,6 +57,7 @@
     import searchList from 'base/search-list/search-list'
     import {mapGetters, mapActions} from 'vuex'
     import Song from 'common/js/song'
+    import topTip from 'base/top-tip/top-tip'
     export default {
         mixins: [searchMixin],
         data() {
@@ -85,6 +92,7 @@
             },
             selectSuggest() {
                 this.saveSearch()
+                this.showTip()
             },
             switchTab(index) {
                 this.currentIndex = index
@@ -92,7 +100,11 @@
             selectSong(song, index) {
                 if (index !== 0) {
                     this.insertSong(new Song(song))
+                    this.showTip()
                 }
+            },
+            showTip() {
+                this.$refs.topTip.show()
             },
             ...mapActions([
                 'insertSong'
@@ -104,7 +116,8 @@
             Switches,
             scroll,
             songList,
-            searchList
+            searchList,
+            topTip
         }
     }
 </script>
