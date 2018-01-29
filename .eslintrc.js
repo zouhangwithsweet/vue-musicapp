@@ -1,53 +1,34 @@
 // http://eslint.org/docs/user-guide/configuring
 //
 
-const globalVas = ['$','_','System','Promise','define','Vue','echarts','createjs','TweenMax','d3','require','console','window','document','test','expect','process','describe','createStoryJS']
-const getEslintVarsGlobals = ()=> {
+const globalVas = ['$', '_','DF', 'createjs', 'TweenMax', 'THREE', 'd3', 'require', 'window', 'document', 'test', 'expect', 'process', 'describe', 'Velocity']
+const getEslintVarsGlobals = () => {
     let gObj = {};
-    globalVas.map( v => {
+    globalVas.map(v => {
         gObj[v] = true
     })
     return gObj
 }
 
-const eslintConfig  = {
-    "extends": [],
-    "root": true,
-    "globals":getEslintVarsGlobals(),
-    "evn": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
-        "node": true
+const eslintConfig = {
+    root: true,
+    parser: 'babel-eslint',
+    parserOptions: {
+        sourceType: 'module'
     },
-    "parser": "babel-eslint",
-    "parserOptions": {
-        "sourceType": "module",
-        "ecmaVersion": 6,
-        "ecmaFeatures": {
-            "jsx": true,
-            "experimentalObjectRestSpread": true
-        }
+    globals: getEslintVarsGlobals(),
+    env: {
+        browser: true,
     },
-    "plugins": [],
-    "settings": {
-        "import/ignore": [
-            "node_modules",
-            "\\.(json|css|less|scss|jpg|png|gif|eot|svg|ttf|woff|woff2|mp4|webm)$",
-            "\\.eslintrc"
-        ],
-        "import/extensions": [".js", ".vue"],
-        "import/resolver": {
-            "node": {
-                "extensions": [".js", ".json"]
-            }
-        }
-    },
-    "rules": {
+    extends: 'vue',
+    // add your custom rules here
+    'rules': {
         // 强制行的最大长度 默认80个
-        "max-len": [2, {"code": 150}],
+        "max-len": [1, {
+            "code": 150
+        }],
         // 变量引号
-        "quotes": [2, "single", {
+        "quotes": [1, "single", {
             "allowTemplateLiterals": true
         }],
         // 缩进4个空格 swtich case缩进
@@ -59,14 +40,18 @@ const eslintConfig  = {
         "semi": [0, "always"],
         // 不允许非空数组里面有多余的空格
         "array-bracket-spacing": [2, "never"],
+        // 不允许函数括号之间存在空格
+        "space-before-function-paren": ["error", "never"],
         // 强制 getter 和 setter 在对象中成对出现
-        "accessor-pairs": 2,
+        "accessor-pairs": 1,
         // 强制 要求箭头函数的箭头之前或之后有空格
         "arrow-spacing": 2,
         // 块语句作用域中禁止使用var 先声明再在块里使用
         "block-scoped-var": 2,
         // 大括号风格要求
-        "brace-style": [1, "1tbs", {"allowSingleLine": true}],
+        "brace-style": [1, "1tbs", {
+            "allowSingleLine": true
+        }],
         // 对象属性中禁止使用空格 obj[foo ] obj[ 'foo']
         "computed-property-spacing": 2,
         // 要求使用骆驼拼写法
@@ -74,7 +59,10 @@ const eslintConfig  = {
         // 对象字面量项尾不能有逗号
         "comma-dangle": [2, "never"],
         // 逗号前后的空格
-        "comma-spacing": [2, {"before": false, "after": true}],
+        "comma-spacing": [2, {
+            "before": false,
+            "after": true
+        }],
         // this别名 that ,self ,me
         "consistent-this": [1, "me"],
         // 要求 switch 语句中有 default 分支
@@ -84,13 +72,13 @@ const eslintConfig  = {
         // 要求使用 === 和 !==  (比较两个字面量的 、 比较 typeof 的值 、与 null 进行比较 可以)
         "eqeqeq": [1, "smart"],
         // 要求使用函数声明 而不是函数表达式 避免作用域提升
-        "func-style": [2, "declaration", {
+        "func-style": [1, "declaration", {
             "allowArrowFunctions": true
         }],
         // 强制块语句的最大可嵌套深度 最大4层
         "max-depth": 2,
         // 限制函数定义中最大参数个数 4个最多
-        "max-params": [2, 6],
+        "max-params": [2, 5],
         // 要求调用无参构造函数时带括号
         "new-parens": 2,
         // 禁止alert
@@ -108,7 +96,7 @@ const eslintConfig  = {
         // 禁止使用看起来像除法的正则表达式
         "no-div-regex": 2,
         // 禁止debuuger 生产模式中
-        "no-debugger": process.env.NODE_ENV !== 'production' ? 0 : 0,
+        "no-debugger": process.env.NODE_ENV !== 'production' ? 0 : 2,
         // 禁止一个模块 重复导入
         "no-duplicate-imports": 2,
         // 禁止 if 语句中 return 语句之后有 else 块
@@ -140,7 +128,7 @@ const eslintConfig  = {
         // 禁止 require 调用与普通变量声明混合使用
         "no-mixed-requires": 2,
         // 禁止使用嵌套的三元表达式
-        "no-nested-ternary": 2,
+        "no-nested-ternary": 0,
         // 禁用Function构造函数 new Function()
         "no-new-func": 2,
         // 禁止使用 Object 构造函数 直接 var obj = {}
@@ -178,10 +166,13 @@ const eslintConfig  = {
         // 禁止 更简单的可替代的 表达式时使用三元操作符 isYes = answer === 1 ? true : false;
         "no-unneeded-ternary": 2,
         // 禁止未使用过的表达式
-        "no-unused-expressions": 2,
+        "no-unused-expressions": [2, {
+            "allowTernary": true
+        }],
         // 禁止未使用过的变量
-        "no-unused-vars": [2, {
+        "no-unused-vars": [1, {
             "vars": "all",
+            "argsIgnorePattern": "\(h\)",
             "args": "after-used" // 最后一个参数必须使用。如：一个函数有两个参数，你使用了第二个参数，ESLint 不会报警告。
         }],
         // 禁止定义前使用
@@ -193,7 +184,9 @@ const eslintConfig  = {
         // 禁用 void 操作符
         "no-void": 2,
         // 要求对象字面量简写语法 es6 标准
-        "object-shorthand": ["off", "always", {"avoidQuotes": true}],
+        "object-shorthand": ["off", "always", {
+            "avoidQuotes": true
+        }],
         // 要求或禁止尽可能地简化赋值操作
         "operator-assignment": 2,
         // 强制操作符使用一致的换行符风格
