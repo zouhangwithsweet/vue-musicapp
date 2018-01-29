@@ -20,6 +20,9 @@ const eslintConfig = {
     env: {
         browser: true,
     },
+    plugins: [
+        'html'
+    ],
     extends: 'vue',
     // add your custom rules here
     'rules': {
