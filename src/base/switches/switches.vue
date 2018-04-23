@@ -41,7 +41,7 @@
             flex 1
             padding 8px
             text-align center
-            font-size $font-size-medim
+            font-size $font-size-medium
             color $color-text-d
             &.active
                 background-color $color-highlight-background

@@ -185,8 +185,8 @@
             },
             playing(newVal) {
                 this.$nextTick(() => {
-                     const audio = this.$refs.audio
-                     newVal ? audio.play() : audio.pause()
+                    const audio = this.$refs.audio
+                    newVal ? audio.play() : audio.pause()
                 })
             }
         },

@@ -50,12 +50,12 @@
 <script>
     import SearchBox from 'base/search-box/search-box'
     import suggest from 'components/suggest/suggest'
-    import {searchMixin} from 'common/js/mixin'
+    import { searchMixin } from 'common/js/mixin'
     import Switches from 'base/switches/switches'
     import scroll from 'base/scroll/scroll'
     import songList from 'base/song-list/song-list'
     import searchList from 'base/search-list/search-list'
-    import {mapGetters, mapActions} from 'vuex'
+    import { mapGetters, mapActions } from 'vuex'
     import Song from 'common/js/song'
     import topTip from 'base/top-tip/top-tip'
     export default {
