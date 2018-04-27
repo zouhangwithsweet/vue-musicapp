@@ -50,8 +50,8 @@
                     return
                 }
                 const deltaX = e.touches[0].pageX - this.touch.startX
-                const offsetWidth = Math.min(this.$refs.progressBar.clientWidth - BTNWIDTH, 
-                Math.max(0, this.touch.left + deltaX) )
+                const offsetWidth = Math.min(this.$refs.progressBar.clientWidth - BTNWIDTH,
+                Math.max(0, this.touch.left + deltaX))
                 this._offset(offsetWidth)
             },
             progressTouchEnd(e) {
