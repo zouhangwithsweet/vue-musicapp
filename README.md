@@ -4,10 +4,10 @@
 > vue全家桶音乐app
 
 ## 先提一个版本吧
->预览地址
-> [静态预览](https://zouhangwithsweet.github.io/vue-musicapp/dist/#/)
-> [herokub部署版本](https://fierce-basin-90527.herokuapp.com/#/singer)
-> [已经部署到国内](http://zz-music.leanapp.cn)
+预览地址
+> [静态预览](https://zouhangwithsweet.github.io/vue-musicapp/dist/#/)  
+> [herokub部署版本](https://fierce-basin-90527.herokuapp.com/#/singer)  
+> [已经部署到国内](http://zz-music.leanapp.cn)  
 
 ## Build Setup
 
