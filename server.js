@@ -47,7 +47,7 @@ app.use('/api', apiRoutes)
 
 app.use(express.static('./dist'))
 
-var port = process.env.PORT || config.build.port
+var port = process.env.PORT || 3000
 module.exports = app.listen(port, function (err) {
     if (err) {
         console.log(err)
