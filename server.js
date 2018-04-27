@@ -1,7 +1,6 @@
 var express = require('express')
-var config = require('./config/index')
 var axios = require('axios')
-
+const path = require('path')
 var app = express()
 
 var apiRoutes = express.Router()
@@ -45,13 +44,7 @@ apiRoutes.get('/lyric', function(req, res){
 
 app.use('/api', apiRoutes)
 
-app.use(express.static('./dist'))
-
-var port = process.env.PORT || 3000
-module.exports = app.listen(port, function (err) {
-    if (err) {
-        console.log(err)
-        return
-    }
-    console.log('listening at http://localhost:' + port +'\n')
-})
+app.use(express.static(path.join(__dirname, 'dist')))
+const port = process.env.PORT || 5000
+app.listen(port)
+console.log('server started ' + port)
