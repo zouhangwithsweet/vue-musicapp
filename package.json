@@ -22,7 +22,7 @@
     "vue-router": "^2.3.1",
     "vue-styled-components": "^1.1.2",
     "vuex": "^2.3.1",
-    "express": "^4.14.1"
+    "express": "^4.17.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
